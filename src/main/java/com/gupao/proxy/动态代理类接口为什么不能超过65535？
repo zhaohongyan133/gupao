@@ -1,0 +1,28 @@
+动态代理类接口为什么不能超过65535？
+
+答：ClassFile 结构体：
+ClassFile {
+           u4             magic;
+           u2             minor_version;
+           u2             major_version;
+           u2             constant_pool_count;
+           cp_info        constant_pool[constant_pool_count-1];
+           u2             access_flags;
+           u2             this_class;
+           u2             super_class;
+           u2             interfaces_count;
+           u2             interfaces[interfaces_count];
+           u2             fields_count;
+           field_info     fields[fields_count];
+           u2             methods_count;
+           method_info    methods[methods_count];
+           u2             attributes_count;
+           attribute_info attributes[attributes_count];
+       }
+
+    含义：
+       1、无符号数属于基本的数据类型，以u1、u2、u4、u8来分别代表1个字节、2个字节、4个字节和8个字节。
+         无符号数可以用来描述数字、索引引用、数量值或按照utf-8编码构成的字符串值
+       2、表是由多个无符号数或其他表构成的复合数据结构，所有的表都以“_info”结尾。
+
+       由上面interfaces_count可以看到使用的为u2类型，代表2个字节，1个字节为8byte，2个字节代表的数字为 2^16 - 1 = 65535，所以类接口最多为65535
